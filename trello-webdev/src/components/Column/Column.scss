@@ -1,0 +1,48 @@
+@import "_setting.scss";
+
+.column {
+  flex: 0 0 auto;
+  width: 300px;
+  height: calc(100%- #{$gap});
+  margin-left: $gap;
+  > * {
+    background-color: $list-bg-color;
+    color: #333;
+    padding: 0 8px;
+  }
+  header {
+    padding-left: 15px;
+    height: $column-header-height;
+    line-height: $column-header-height;
+    font-size: 16px;
+    font-weight: bold;
+    border-top-right-radius: $border-radius;
+    border-top-left-radius: $border-radius;
+  }
+  footer {
+    padding-left: $gap;
+    height: $column-footer-height;
+    line-height: $column-footer-height;
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+  }
+  ul.task-list {
+    list-style-type: none;
+    margin: 0;
+    max-height: calc(100%-#{$column-header-height}-#{$column-footer-height});
+    li.task-item {
+      background-color: white;
+      padding: $gap;
+      border-radius: 1px;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+      &:not(:last-child) {
+        margin-bottom: $gap;
+      }
+      img {
+        display: block;
+        width: 100%;
+        margin: $gap 0 $gap 0;
+      }
+    }
+  }
+}
