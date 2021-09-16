@@ -5,7 +5,7 @@ img {
   width: 100%;
   margin: $gap 0 $gap 0;
 }
-li.task-item {
+li.card-item {
   background-color: white;
   padding: $gap;
   border-radius: 1px;
@@ -13,7 +13,7 @@ li.task-item {
   &:not(:last-child) {
     margin-bottom: $gap;
   }
-  img {
+  img.card-cover {
     display: block;
     width: 100%;
     margin: $gap 0 $gap 0;

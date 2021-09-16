@@ -26,11 +26,11 @@
     border-bottom-left-radius: $border-radius;
     border-bottom-right-radius: $border-radius;
   }
-  ul.task-list {
+  ul.card-list {
     list-style-type: none;
     margin: 0;
     max-height: calc(100%-#{$column-header-height}-#{$column-footer-height});
-    li.task-item {
+    li.card-item {
       background-color: white;
       padding: $gap;
       border-radius: 1px;

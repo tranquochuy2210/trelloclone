@@ -10,6 +10,7 @@ body {
 .trello-master {
   height: 100vh;
   width: fit-content;
+  min-width: 100vw;
   display: grid;
   grid-template-rows: 40px 50px 1fr;
   background-color: $board-bg-color;
