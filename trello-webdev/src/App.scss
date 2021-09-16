@@ -1,0 +1,83 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600;400&display=swap");
+
+$board-bg-color: #0079bf;
+$appbar-bg-color: #0067a3;
+$list-bg-color: #ebecf0;
+$line-height: 36px;
+$gap: 10px;
+body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.3em;
+  font-family: "Source Sans Pro" sans-serif;
+}
+
+.trello-master {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 40px 50px 1fr;
+  background-color: $board-bg-color;
+}
+.navbar {
+  padding-left: $gap;
+  display: flex;
+  align-items: center;
+  &.app {
+    background-color: $appbar-bg-color;
+    font-size: 1.5rem;
+  }
+  &.board {
+    background-color: $board-bg-color;
+    font-size: 1.5rem;
+  }
+}
+.board-columns {
+  display: flex;
+  overflow-x: auto;
+  .column {
+    flex: 0 0 auto;
+    width: 300px;
+    height: calc(100%- #{$gap});
+    margin-left: $gap;
+    > * {
+      background-color: $list-bg-color;
+      color: #333;
+      padding: 0 8px;
+    }
+    header {
+      padding-left: 15px;
+      height: 36;
+      line-height: 36px;
+      font-weight: bold;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+    footer {
+      padding-left: 15px;
+      height: 36;
+      line-height: $line-height;
+      font-weight: bold;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+    ul {
+      list-style-type: none;
+      margin: 0;
+      overflow-y: auto;
+      max-height: 500px;
+    }
+    li {
+      background-color: white;
+      padding: $gap;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+      &:not(:last-child) {
+        margin-bottom: $gap;
+      }
+    }
+    img {
+      display: block;
+      width: 100%;
+      margin: $gap 0 $gap 0;
+    }
+  }
+}
