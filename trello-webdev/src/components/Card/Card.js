@@ -1,14 +1,14 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import './Card.scss'
 
 
 const Card = props => {
-    const {card}=props
+    const { card }=props
     return (
-        <li className="card-item">
-            {card.cover&&<img src={card.cover} className="card-cover" alt="image"/>}
+        <div className="card-item">
+            {card.cover&&<img src={card.cover} className="card-cover" alt="image" onMouseDown={e => e.preventDefault()}/>}
             Title:{card.title}
-        </li>
+        </div>
     )
 }
 

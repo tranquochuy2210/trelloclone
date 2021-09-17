@@ -11,6 +11,7 @@
     padding: 0 8px;
   }
   header {
+    cursor: pointer;
     padding-left: 15px;
     height: $column-header-height;
     line-height: $column-header-height;
@@ -26,8 +27,7 @@
     border-bottom-left-radius: $border-radius;
     border-bottom-right-radius: $border-radius;
   }
-  ul.card-list {
-    list-style-type: none;
+  .card-list {
     margin: 0;
     max-height: calc(100%-#{$column-header-height}-#{$column-footer-height});
     li.card-item {
@@ -43,6 +43,20 @@
         width: 100%;
         margin: $gap 0 $gap 0;
       }
+    }
+    .card-ghost {
+      transition: transform 0.18s ease;
+      transform: rotateZ(5deg);
+    }
+
+    .card-ghost-drop {
+      transition: transform 0.18s ease-in-out;
+      transform: rotateZ(0deg);
+    }
+    .card-drop-preview {
+      background-color: rgba(150, 150, 200, 0.1);
+      border: 1px dashed #abc;
+      margin: 5px;
     }
   }
 }
