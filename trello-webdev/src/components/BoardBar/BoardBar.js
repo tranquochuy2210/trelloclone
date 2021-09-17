@@ -1,8 +1,8 @@
 import React from 'react'
 import './BoardBar.scss'
-import PropTypes from 'prop-types'
 
-const BoardBar = props => {
+
+const BoardBar = () => {
     return (
         <div className="navbar-board">
             <h1>boardBar</h1>
@@ -10,8 +10,6 @@ const BoardBar = props => {
     )
 }
 
-BoardBar.propTypes = {
 
-}
 
 export default BoardBar

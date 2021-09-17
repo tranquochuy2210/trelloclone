@@ -1,8 +1,8 @@
 import React from 'react'
 import './AppBar.scss'
-import PropTypes from 'prop-types'
 
-const AppBar = props => {
+
+const AppBar = () => {
     return (
         <div className="navbar-app">
             Bar
@@ -10,9 +10,6 @@ const AppBar = props => {
     )
 }
 
-AppBar.propTypes = {
-
-}
 
 export default AppBar
 
