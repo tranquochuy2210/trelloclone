@@ -26,6 +26,14 @@
     line-height: $column-footer-height;
     border-bottom-left-radius: $border-radius;
     border-bottom-right-radius: $border-radius;
+    color: #888;
+    .footer-actions {
+      margin-left: $gap;
+      cursor: pointer;
+      &:hover {
+        color: #333;
+      }
+    }
   }
   .card-list {
     margin: 0;
