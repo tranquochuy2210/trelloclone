@@ -17,6 +17,17 @@ body {
   display: grid;
   grid-template-rows: 40px 50px 1fr;
   background-color: $board-bg-color;
+  span.cancel-icon {
+    margin-left: 10px;
+    i {
+      font-size: 18px;
+      color: $arlert-color;
+      &:hover {
+        color: darken($color: $arlert-color, $amount: 10);
+        cursor: pointer;
+      }
+    }
+  }
 }
 
 header {

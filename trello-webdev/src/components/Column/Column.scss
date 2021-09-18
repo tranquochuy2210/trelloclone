@@ -16,13 +16,13 @@
     height: $column-header-height;
     line-height: $column-header-height;
     font-size: 16px;
-    font-weight: bolder;
     border-top-right-radius: $border-radius;
     border-top-left-radius: $border-radius;
     display: flex;
     .trello-content-edit-table {
       background-color: inherit;
       border: none;
+      font-weight: 600;
       font-size: inherit;
       cursor: pointer;
       &:hover {
@@ -36,6 +36,7 @@
     .column-dropdown-actions {
       flex: 10%;
       button.dropdown-btn {
+        height: 30px;
         border: none;
         padding: 0 $gap;
         font-size: 16px;
@@ -66,7 +67,7 @@
   }
   footer {
     padding-left: $gap;
-    height: $column-footer-height;
+    min-height: $gap;
     line-height: $column-footer-height;
     border-bottom-left-radius: $border-radius;
     border-bottom-right-radius: $border-radius;
@@ -109,6 +110,15 @@
       background-color: rgba(150, 150, 200, 0.1);
       border: 1px dashed #abc;
       margin: 5px;
+    }
+    .add-card-area {
+      font-weight: normal;
+      .input-enter-new-card {
+        max-height: 162px;
+        min-height: 54px;
+        padding: $gap;
+        font-weight: 400;
+      }
     }
   }
 }

@@ -29,5 +29,4 @@ function ConfirmModal(props) {
       </div>
     )
   }
-  
 export default ConfirmModal

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react'
+import React, { useEffect, useState, useRef} from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
 import { isEmpty } from 'lodash'
 import './BoardContent.scss'
@@ -14,12 +14,10 @@ const BoardContent = () => {
     const [openNewColumnForm, setOpenNewColumnForm]= useState(false)
     const newColumnInputRef=useRef(null)
     const [newColumnTitle, setNewColumnTitle]=useState('')
-    const onNewColumnTitleChange= useCallback(
-        (e) => {
+    const onNewColumnTitleChange=(e) => {
             setNewColumnTitle(e.target.value)
-        }, []
-    )
-
+    }
+    const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
     useEffect( () => {
         const boardFromData= initialData.boards.find((board) => board.id==='board-1')
         if (boardFromData) {
@@ -46,7 +44,7 @@ const BoardContent = () => {
         newBoard.columns=newColumns
         setColumns(newColumns)
         setBoard(newBoard)
-    }   
+    }
     const onCardDrop = (columnId, dropResult) => {
         if ( dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
             const newColumns=[...columns]
@@ -88,13 +86,13 @@ const BoardContent = () => {
         } else {
             newColumns.splice(columnIndex, 1, newColumnToUpdate)
         }
-        const newBoard={...board}
+        const newBoard={ ...board }
         newBoard.columnOrder=newColumns.map( c => c.id)
         newBoard.columns=newColumns
         setColumns(newColumns)
         setBoard(newBoard)
     }
-    const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
+
     return (
         <div className="board-content">
             <Container
@@ -110,7 +108,7 @@ const BoardContent = () => {
             >
             {columns.map((column, index) => (
                 <Draggable key={index}>
-                    < Column column={column} onCardDrop={onCardDrop} onUpdateColumn={onUpdateColumn}/>
+                    < Column column={column} onCardDrop={onCardDrop} onUpdateColumn = {onUpdateColumn}/>
                 </Draggable>
             ))}
             </Container>
@@ -139,11 +137,10 @@ const BoardContent = () => {
                             <Button variant="success" type="submit" size="sm" onClick={addNewColumn}>
                                 Add column
                             </Button>
-                            <span className="cancel-new-column"><i className="fa fa-trash icon" onClick={toggleOpenNewColumnForm}/></span>
+                            <span className="cancel-icon"><i className="fa fa-trash icon" onClick={toggleOpenNewColumnForm}/></span>
                         </Col>
                     </Row>
                 }
-                
             </BsContainer>
         </div>
     )

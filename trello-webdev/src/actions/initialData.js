@@ -14,12 +14,12 @@ export const initialData = {
                     cards:[
                     { id:'card-1', boardId:'board-1', columnId:'column-1', title:'Title of card 1', cover:'https://th.bing.com/th/id/OIF.Gi9URDvv72nxRXDM9gkuAA?pid=ImgDet&rs=1'}, 
                     { id:'card-2', boardId:'board-1', columnId:'column-1', title:'Title of card 2', cover:null },
-                    { id:'card-3', boardId:'board-1', columnId:'column-1',title:'Title of card 3',cover:null },
+                    { id:'card-3', boardId:'board-1', columnId:'column-1', title:'Title of card 3', cover:null },
                     { id:'card-4', boardId:'board-1', columnId:'column-1', title:'Title of card 4', cover:null },
                     { id:'card-5', boardId:'board-1', columnId:'column-1', title:'Title of card 5', cover:null },
                     { id:'card-6', boardId:'board-1', columnId:'column-1', title:'Title of card 6', cover:null }
                     ]
-                }, 
+                },
                 {
                     id: 'column-2',
                     boardId: 'board-1',
