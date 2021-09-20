@@ -4,10 +4,9 @@ import { isEmpty } from 'lodash'
 import './BoardContent.scss'
 import Column from 'components/Column/Column'
 import { mapOrder } from 'utilities/sort'
-import { initialData } from 'actions/initialData'
 import { applyDrag } from 'utilities/dragDrop'
 import { Col, Row, Container as BsContainer, Form, Button } from 'react-bootstrap'
-
+import { fetchBoardDetails, createNewColumn, updateBoard, updateColumn, updateCard } from 'actions/ApiCall/index'
 const BoardContent = () => {
     const [board, setBoard]=useState({})
     const [columns, setColumns]= useState({})
@@ -19,11 +18,11 @@ const BoardContent = () => {
     }
     const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
     useEffect( () => {
-        const boardFromData= initialData.boards.find((board) => board.id==='board-1')
-        if (boardFromData) {
-            setBoard(boardFromData)
-            setColumns(mapOrder(boardFromData.columns, boardFromData.columnOrder, 'id'))
-        }
+        fetchBoardDetails('6145f455502f754b4129e399').then((board) => {
+            mapOrder(board.columns, board.columnOrder, '_id')
+            setColumns(board.columns)
+            setBoard(board)
+        })
     }, [])
     useEffect( () => {
         if (newColumnInputRef && newColumnInputRef.current) {
@@ -36,58 +35,79 @@ const BoardContent = () => {
             board not found
         </div>
     }
-    const onColumnDrop=(dropResult) => {
+    const onColumnDrop= async (dropResult) => {
         let newColumns=[...columns]
         newColumns= applyDrag(newColumns, dropResult)
-        const newBoard={...board}
-        newBoard.columnOrder=newColumns.map( c => c.id)
+        const newBoard={ ...board }
+        newBoard.columnOrder=newColumns.map( c => c._id)
         newBoard.columns=newColumns
         setColumns(newColumns)
         setBoard(newBoard)
-    }
-    const onCardDrop = (columnId, dropResult) => {
-        if ( dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
-            const newColumns=[...columns]
-            let currentColumn =newColumns.find((c) => c.id===columnId)
-            currentColumn.cards=applyDrag(currentColumn.cards, dropResult)
-            currentColumn.cardOrder = currentColumn.cards.map((i) => i.id)
-            setColumns(newColumns)
-            console.log(columnId)
-            console.log(currentColumn)
+        try {
+            await updateBoard(newBoard._id, { columnOrder: newBoard.columnOrder })
+        } catch (error) {
+            setColumns(columns)
+            setBoard(board)
+            console.log(error)
         }
     }
-    const addNewColumn= () => {
+    const onCardDrop = async (columnId, dropResult) => {
+        if ( dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
+            const newColumns=[...columns]
+            let currentColumn =newColumns.find((c) => c._id===columnId)
+            currentColumn.cards=applyDrag(currentColumn.cards, dropResult)
+            currentColumn.cardOrder = currentColumn.cards.map((i) => i._id)
+            setColumns(newColumns)
+            try {
+                if ( dropResult.removedIndex !== null && dropResult.addedIndex !== null) {
+                    await updateColumn(currentColumn._id, { cardOrder: currentColumn.cardOrder })
+                } else {
+                    updateColumn(currentColumn._id, { cardOrder: currentColumn.cardOrder } )
+                    if (dropResult.addedIndex !== null) {
+                        const currentCard = { ...dropResult.payload }
+                        currentCard.columnId = currentColumn._id
+                        updateCard(currentCard._id, currentCard)
+                    }
+                }
+            } catch (error) {
+                setColumns(columns)
+                console.log(error)
+            }
+            
+            
+        }
+    }
+    const addNewColumn= async() => {
         if (!newColumnTitle) {
             newColumnInputRef.current.focus()
             return
         }
-        const newColumnToAdd={
-            id: Math.random().toString(36).substr(2, 5),
-            boardId: board.id,
-            title: newColumnTitle.trim(),
-            cardOrder: [],
-            cards: []
+
+        const data={
+            boardId: board._id,
+            title: newColumnTitle.trim()
         }
+        const newColumn = await createNewColumn(data)
         let newColumns=[...columns]
-        newColumns.push(newColumnToAdd)
-        const newBoard={...board}
-        newBoard.columnOrder=newColumns.map( c => c.id)
+        newColumns.push(newColumn)
+        const newBoard={ ...board }
+        newBoard.columnOrder=newColumns.map( c => c._id)
         newBoard.columns=newColumns
         setColumns(newColumns)
         setBoard(newBoard)
         setNewColumnTitle('')
     }
     const onUpdateColumn= (newColumnToUpdate) => {
-        const columnIdToUpdate = newColumnToUpdate.id
+        const columnIdToUpdate = newColumnToUpdate._id
         let newColumns = [...columns]
-        const columnIndex=newColumns.findIndex((column) => column.id===columnIdToUpdate)
+        const columnIndex=newColumns.findIndex((column) => column._id===columnIdToUpdate)
         if (newColumnToUpdate._destroy) {
             newColumns.splice(columnIndex, 1)
         } else {
             newColumns.splice(columnIndex, 1, newColumnToUpdate)
         }
         const newBoard={ ...board }
-        newBoard.columnOrder=newColumns.map( c => c.id)
+        newBoard.columnOrder=newColumns.map( c => c._id)
         newBoard.columns=newColumns
         setColumns(newColumns)
         setBoard(newBoard)
@@ -116,7 +136,7 @@ const BoardContent = () => {
                 {!openNewColumnForm&&
                     <Row className="add-new-column">
                         <Col onClick={toggleOpenNewColumnForm}>
-                            <i className="fa fa-plus icon"/> Add another card
+                            <i className="fa fa-plus icon"/> Add another column
                         </Col>
                     </Row>
                 }

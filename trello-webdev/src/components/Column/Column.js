@@ -8,11 +8,12 @@ import ConfirmModal from 'components/Common/ConfirmModal'
 import { MODAL_ACTION_CONFIRM } from 'utilities/constant'
 import { selectAllInlineText, saveContentAfterPressEnter } from 'utilities/contentEditTable'
 import { cloneDeep } from 'lodash'
+import { createNewCard, updateColumn } from 'actions/ApiCall/index'
 
 const Column = props => {
     const { column, onCardDrop, onUpdateColumn } =props
     const cards=column.cards
-    mapOrder(cards, column.cardOrder, 'id')
+    mapOrder(cards, column.cardOrder, '_id')
     const [showConfirmModal, setShowConfirmModal]=useState(false)
     const toggleShowConfirmModal= () => setShowConfirmModal(!showConfirmModal)
     const [columnTitle, setColumnTitle]= useState('')
@@ -25,21 +26,20 @@ const Column = props => {
     const [newCardTitle, setNewCardTitle]=useState('')
     const onNewCardTitleChange = (e) => setNewCardTitle(e.target.value)
 
-    const addNewCard= () => {
+    const addNewCard= async () => {
         if (!newCardTitle) {
             newCardTextAreaRef.current.focus()
             return
         }
-        const newCardToAdd={
-            id: Math.random().toString(36).substr(2, 5),
+        const data={
             boardId: column.boardId,
-            columnId: column.id,
-            title: newCardTitle.trim(),
-            cover: null
+            columnId: column._id,
+            title: newCardTitle.trim()
         }
+        const newCard = await createNewCard(data)
         const newColumn= cloneDeep(column)
-        newColumn.cards.push(newCardToAdd)
-        newColumn.cardOrder.push(newCardToAdd.id)
+        newColumn.cards.push(newCard)
+        newColumn.cardOrder.push(newCard._id)
         onUpdateColumn(newColumn)
         setNewCardTitle('')
         toggleOpenNewCardForm()
@@ -58,20 +58,16 @@ const Column = props => {
     const handleColumnChangeTitle= useCallback((e) => {
         setColumnTitle(e.target.value)
     }, [])
-    const handleColumnTitleBlur = () => {
-        const newColumn = {
-            ...column,
-            title: columnTitle
+    const handleColumnTitleBlur = async() => {
+        if (column.title !== columnTitle) {
+            const newColumn= await updateColumn(column._id, { title: columnTitle })
+            onUpdateColumn(newColumn)
         }
-        onUpdateColumn(newColumn)
     }
 
-    const onConfirmModalAction= (type) => {
+    const onConfirmModalAction= async (type) => {
         if (type === MODAL_ACTION_CONFIRM) {
-            const newColumn = {
-                ...column,
-                _destroy: true
-            }
+            const newColumn = await updateColumn(column._id, { _destroy: true })
             onUpdateColumn(newColumn)
         }
         toggleShowConfirmModal()
@@ -119,7 +115,7 @@ const Column = props => {
                     //   }}
                     // onDragStart={e => console.log('drag started', e)}
                     // onDragEnd={e => console.log('drag end', e)}
-                    onDrop={ dropResult => onCardDrop(column.id, dropResult)}
+                    onDrop={ dropResult => onCardDrop(column._id, dropResult)}
                     getChildPayload={index => cards[index]
                     }
                     dragClass="card-ghost"
